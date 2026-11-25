@@ -14,7 +14,7 @@ import shutil
 import sys
 from pathlib import Path
 
-EXPECTED_SHA256 = "a38cff2a5639c8160460d52cf817157cefef836a13718516c7df514395b850f8"
+EXPECTED_SHA256 = "afc90dac981556bb767331d8b0ece8948562fbe99337d18f3ea3c368d16e23dc"
 
 
 def sha256_file(path: Path) -> str:

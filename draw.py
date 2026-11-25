@@ -177,7 +177,7 @@ def draw_panel(
 ) -> None:
     x0, y0, x1, y1 = box
     pad_x = 18
-    pad_y = 14
+    pad_y = 16
 
     bg = SURFACE_LEAD if panel.is_lead else BG_IVORY
     border = ACCENT_BURGUNDY if panel.is_lead else RULE_COLOR
@@ -224,7 +224,7 @@ def draw_panel(
     # Summary (clean sans)
     font_body = load_font(FONT_SANS, 14)
     body_lines = wrap_text(draw, panel.summary, font_body, inner_w)
-    body_line_h = 20
+    body_line_h = 22
     for line in body_lines:
         draw.text((inner_x, cursor_y), line, font=font_body, fill=INK_BODY)
         cursor_y += body_line_h
@@ -306,15 +306,19 @@ def render(out_path: Path) -> None:
         draw.rectangle([margin_x, sy0, margin_x + 4, sy1], fill=k_color)
 
         kx = margin_x + 14
-        draw.text((kx, sy0 + 7), kicker, font=font_strip_kicker, fill=k_color)
         kb = draw.textbbox((0, 0), kicker, font=font_strip_kicker)
         text_x = kx + (kb[2] - kb[0]) + 14
         max_body_w = (WIDTH - margin_x - 14) - text_x
         lines = wrap_text(draw, body, font_strip_body, max_body_w)
         if len(lines) > 2:
             raise RuntimeError(f"Footer strip '{kicker}' wrapped to {len(lines)} lines (>2)")
+
+        line_h = 19
+        block_h = (len(lines) - 1) * line_h + 15
+        text_y0 = sy0 + (strip_h - block_h) // 2
+        draw.text((kx, text_y0), kicker, font=font_strip_kicker, fill=k_color)
         for li, line in enumerate(lines):
-            draw.text((text_x, sy0 + 7 + li * 19), line, font=font_strip_body, fill=INK_BODY)
+            draw.text((text_x, text_y0 + li * line_h), line, font=font_strip_body, fill=INK_BODY)
 
     img.save(out_path, format="PNG")
 
